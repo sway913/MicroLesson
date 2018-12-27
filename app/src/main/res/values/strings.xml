@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">微课</string>
+
+    <!--MainActivity-->
+    <string name="text_main_tab">主页</string>
+    <string name="text_user_tab">创建</string>
+
+    <!--CreateFragment-->
+    <string name="text_choose_pictures">选择图片</string>
+    <string name="text_drafts_box">草稿箱</string>
+
+    <!--PrepareFragment-->
+    <string name="text_start_make_project">开始制作</string>
+    <string name="text_tips">Tips:长按可拖曳排序</string>
+
+    <!--MakeFragment-->
+    <string name="text_start_recorder">开始 录音</string>
+    <string name="text_pause_recorder">暂停 录音</string>
+    <string name="text_stop_recorder">停止 录音</string>
+    <string name="text_change_pic">更换图片</string>
+</resources>

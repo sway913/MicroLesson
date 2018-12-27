@@ -1,0 +1,134 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "east.orientation.microlesson"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+
+        release {
+            storeFile file(keystoreProperties['RELEASE_STORE_FILE']) // 签名文件
+            storePassword keystoreProperties['RELEASE_STORE_PASSWORD']
+            keyAlias keystoreProperties['RELEASE_KLIAS']
+            keyPassword keystoreProperties['RELEASE_KLIAS_PASSWORD']
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "Boolean", "debug", "true"
+            minifyEnabled false   // 运行混淆
+            shrinkResources false // 打包忽略无用资源文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            buildConfigField "Boolean", "release", "false"
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    greendao {
+        schemaVersion 1  //版本
+        daoPackage '${applicationId}.greendao' // 一般为app包名+生成文件的文件夹名
+        targetGenDir 'src/main/java' //生成文件路径
+    }
+
+    //解决编译release版时内存溢出
+    dexOptions {
+
+        javaMaxHeapSize "4g"
+
+        preDexLibraries = false
+
+    }
+    //打包后应用名称
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            def fileName
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                if (variant.buildType.name.equalsIgnoreCase('release')) {
+                    fileName = "MicroLesson_v${defaultConfig.versionName}.apk"
+                } else if (variant.buildType.name.equalsIgnoreCase('debug')) {
+                    fileName = "MicroLesson_v${defaultConfig.versionName}_debug.apk"
+                }
+                outputFileName = fileName
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // 动态权限
+    implementation('com.github.hotchemi:permissionsdispatcher:3.3.1') {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
+    // butterKnife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    // listView / recyclerView通用adapter
+    implementation('com.zhy:base-rvadapter:3.0.3') {
+        // exclude support
+        exclude group: "com.android.support"
+    }
+    // greenDao
+    implementation 'org.greenrobot:greendao:3.2.2'
+    // add library
+    // mvp
+    implementation 'com.hannesdorfmann.mosby3:mvp:3.1.0'
+    // Plain MVP
+    // socket库
+    implementation 'com.tonystark.android:socket:4.1.0'
+    // rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    // picture select
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+    // lifecycle
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+    // 如果不想继承SupportActivity/Fragment，自己定制Support，可仅依赖:
+    implementation 'me.yokeyword:fragmentation-core:1.3.6'
+    // 如果想使用SwipeBack 滑动边缘退出Fragment/Activity功能，完整的添加规则如下：
+    //implementation 'me.yokeyword:fragmentation:1.3.6'
+    // swipeBack基于fragmentation, 如果是自定制SupportActivity/Fragment，则参照SwipeBackActivity/Fragment实现即可
+    //implementation 'me.yokeyword:fragmentation-swipeback:1.3.6'
+    // leakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+    implementation project(':libInkCanvas')
+    implementation project(':sopcast-sdk')
+}

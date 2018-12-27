@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_pics"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/x_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.5"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sp_tv_background"
+        app:layout_constraintBottom_toBottomOf="@id/rv_pics"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drawable_icon_start_24dp"/>
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_voice"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/whitesmoke"
+        app:layout_constraintTop_toBottomOf="@id/rv_pics"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_commit"/>
+
+    <TextView
+        android:id="@+id/tv_change_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_change_pic"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/sl_tv_background"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/rv_pics"
+        app:layout_constraintBottom_toBottomOf="@id/rv_pics"
+        app:layout_constraintLeft_toLeftOf="@id/rv_pics"
+        app:layout_constraintRight_toRightOf="@id/rv_pics"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.99" />
+
+    <TextView
+        android:id="@+id/tv_pic_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/1"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/sp_tv_background"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/rv_pics"
+        app:layout_constraintBottom_toBottomOf="@id/rv_pics"
+        app:layout_constraintLeft_toLeftOf="@id/rv_pics"
+        app:layout_constraintRight_toRightOf="@id/rv_pics"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintVertical_bias="0.99" />
+
+    <View
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_voice"/>
+
+    &lt;!&ndash;<Button&ndash;&gt;
+        &lt;!&ndash;android:id="@+id/btn_recorder"&ndash;&gt;
+        &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+        &lt;!&ndash;android:layout_height="0dp"&ndash;&gt;
+        &lt;!&ndash;android:text="@string/text_start_recorder"&ndash;&gt;
+        &lt;!&ndash;android:drawableStart="@drawable/sl_recorder_btn_background"&ndash;&gt;
+        &lt;!&ndash;android:background="@drawable/rp_btn_background"&ndash;&gt;
+        &lt;!&ndash;android:paddingTop="0dp"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintLeft_toLeftOf="parent"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintRight_toRightOf="parent"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintTop_toTopOf="@+id/iv_commit"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintHorizontal_bias="0"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintVertical_bias="1"&ndash;&gt;
+        &lt;!&ndash;app:layout_constraintWidth_percent="0.88" />&ndash;&gt;
+
+    <ImageView
+        android:id="@+id/iv_recorder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/drawable_icon_start_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintHeight_percent="0.05"/>
+
+    <ImageView
+        android:id="@+id/iv_stop_recorder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/drawable_icon_stop_24dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintLeft_toRightOf="@+id/iv_recorder"
+        app:layout_constraintTop_toTopOf="@+id/iv_recorder"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_recorder"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHeight_percent="0.04" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_stop_recorder"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        app:layout_constraintLeft_toRightOf="@+id/iv_stop_recorder"
+        app:layout_constraintTop_toTopOf="@+id/iv_recorder"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_recorder"
+        />
+
+    <ImageView
+        android:id="@+id/iv_commit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/drawable_icon_commit_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintHeight_percent="0.05"/>-->
+</android.support.constraint.ConstraintLayout>
