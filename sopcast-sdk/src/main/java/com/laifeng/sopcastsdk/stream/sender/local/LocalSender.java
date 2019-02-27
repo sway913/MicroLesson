@@ -31,8 +31,7 @@ public class LocalSender implements Sender{
 
     @Override
     public void start() {
-        String sdcardPath = Environment.getExternalStorageDirectory().toString();
-        mTestFile = new File(sdcardPath+"/"+10*Math.random()+"_SopCast.flv");
+        mTestFile = new File(path);
 
         if(mTestFile.exists()){
             mTestFile.delete();

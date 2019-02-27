@@ -9,8 +9,8 @@ android {
         applicationId "east.orientation.microlesson"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -51,7 +51,7 @@ android {
 
     greendao {
         schemaVersion 1  //版本
-        daoPackage '${applicationId}.greendao' // 一般为app包名+生成文件的文件夹名
+        daoPackage 'east.orientation.microlesson.greendao' // 一般为app包名+生成文件的文件夹名
         targetGenDir 'src/main/java' //生成文件路径
     }
 
@@ -84,46 +84,65 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     // 动态权限
     implementation('com.github.hotchemi:permissionsdispatcher:3.3.1') {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.3.1"
+
     // butterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     // listView / recyclerView通用adapter
     implementation('com.zhy:base-rvadapter:3.0.3') {
         // exclude support
         exclude group: "com.android.support"
     }
+
     // greenDao
     implementation 'org.greenrobot:greendao:3.2.2'
-    // add library
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+
     // mvp
     implementation 'com.hannesdorfmann.mosby3:mvp:3.1.0'
-    // Plain MVP
+
     // socket库
-    implementation 'com.tonystark.android:socket:4.1.0'
+    implementation 'com.tonystark.android:socket:4.2.1'
+
     // rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
     // picture select
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+
     // lifecycle
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+
+    // video player
+    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
+    //是否需要ExoPlayer模式
+    implementation 'com.shuyu:GSYVideoPlayer-exo2:6.0.3'
+    //根据你的需求ijk模式的so
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
+    implementation 'com.shuyu:gsyVideoPlayer-arm64:6.0.3'
+
     // 如果不想继承SupportActivity/Fragment，自己定制Support，可仅依赖:
     implementation 'me.yokeyword:fragmentation-core:1.3.6'
     // 如果想使用SwipeBack 滑动边缘退出Fragment/Activity功能，完整的添加规则如下：
     //implementation 'me.yokeyword:fragmentation:1.3.6'
     // swipeBack基于fragmentation, 如果是自定制SupportActivity/Fragment，则参照SwipeBackActivity/Fragment实现即可
     //implementation 'me.yokeyword:fragmentation-swipeback:1.3.6'
+
     // leakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'

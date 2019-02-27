@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">微课</string>
 
-    <!--MainActivity-->
-    <string name="text_main_tab">主页</string>
+    LaunchActivityvity-->
+    <string name="text_online_tab">首页</string>
+    <string name="text_local_tab">本地</string>
     <string name="text_user_tab">创建</string>
+
+    <!--ShowFragment-->
+    <string name="text_project_title">标题</string>
+    <string name="text_project_user_name">用户</string>
 
     <!--CreateFragment-->
     <string name="text_choose_pictures">选择图片</string>
@@ -18,4 +23,11 @@
     <string name="text_pause_recorder">暂停 录音</string>
     <string name="text_stop_recorder">停止 录音</string>
     <string name="text_change_pic">更换图片</string>
+
+    <!--CommitFragment-->
+    <string name="text_video_title_tag">标题:</string>
+    <string name="text_video_title_tip">请输入您的标题</string>
+    <string name="text_video_class_tag">分类</string>
+    <string name="text_video_class_tip">请输入您的分类</string>
+    <string name="text_commit">完成</string>
 </resources>

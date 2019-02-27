@@ -5,6 +5,7 @@ package east.orientation.microlesson.update;
  */
 
 public class DownloadInfo {
+    public String userId;
     public String type;
     public String path;
     public String fileName;

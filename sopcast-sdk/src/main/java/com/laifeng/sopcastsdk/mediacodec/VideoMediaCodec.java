@@ -19,15 +19,15 @@ import com.laifeng.sopcastsdk.utils.SopCastLog;
  * @Time 下午6:07
  * @Version
  */
-@TargetApi(18)
+@TargetApi(21)
 public class VideoMediaCodec {
 
     public static MediaCodec getVideoMediaCodec(VideoConfiguration videoConfiguration) {
         int videoWidth = getVideoSize(videoConfiguration.width);
         int videoHeight = getVideoSize(videoConfiguration.height);
         MediaFormat format = MediaFormat.createVideoFormat(videoConfiguration.mime, videoWidth, videoHeight);
-        format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        format.setLong(MediaFormat.KEY_REPEAT_PREVIOUS_FRAME_AFTER, (videoConfiguration.ifi * 2000 * 1000) / videoConfiguration.fps);
         format.setInteger(MediaFormat.KEY_BIT_RATE, videoConfiguration.maxBps* 1024);
         int fps = videoConfiguration.fps;
         //设置摄像头预览帧率

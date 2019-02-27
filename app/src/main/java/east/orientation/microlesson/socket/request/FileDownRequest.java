@@ -14,18 +14,20 @@ public class FileDownRequest extends BytesRequest {
     private String fileName;
     private long offset;
     private int length;
+    private String userId;
 
-    public FileDownRequest(String type, String fileName, long offset, int length) {
+    public FileDownRequest(String type, String fileName, long offset, int length, String userId) {
         this.type = type;
         this.fileName = fileName;
         this.offset = offset;
         this.length = length;
+        this.userId = userId;
     }
 
     @Override
     public byte[] getContent() {
         try {
-            return String.format("Orntcmd=filedown_type,data=%s,%s,%s,%s", type, fileName, offset, length).getBytes("gbk");
+            return String.format("Orntcmd=filedown_type,data=%s,%s,%s,%s,%s", type, fileName, offset, length, userId).getBytes("gbk");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

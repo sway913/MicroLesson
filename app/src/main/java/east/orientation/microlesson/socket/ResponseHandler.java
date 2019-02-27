@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 import east.orientation.microlesson.local.Common;
 import east.orientation.microlesson.rxbus.RxBus;
+import east.orientation.microlesson.rxbus.event.PublishQueryResponse;
 import east.orientation.microlesson.rxbus.event.ResponseMessage;
 import east.orientation.microlesson.update.UpdateManager;
 
@@ -61,6 +62,9 @@ public class ResponseHandler extends Handler {
                             RxBus.getDefault().post(responseMessage);
                         }
                     }
+                } else if (cmd.equals(Common.CMD_PUBLISH_QUERY)){
+                    PublishQueryResponse queryResponse = new PublishQueryResponse(cmd,isOk,response);
+                    RxBus.getDefault().post(queryResponse);
                 } else {
                     RxBus.getDefault().post(responseMessage);
                 }

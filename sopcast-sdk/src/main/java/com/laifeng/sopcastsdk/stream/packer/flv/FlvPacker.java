@@ -86,6 +86,7 @@ public class FlvPacker implements Packer, AnnexbHelper.AnnexbNaluListener{
         FlvPackerHelper.writeAudioTag(buffer, audio, false, mAudioSampleSize);
         buffer.putInt(dataSize);
         packetListener.onPacket(buffer.array(), AUDIO);
+
     }
 
     @Override
@@ -119,6 +120,7 @@ public class FlvPacker implements Packer, AnnexbHelper.AnnexbNaluListener{
         FlvPackerHelper.writeH264Packet(buffer, video, isKeyFrame);
         buffer.putInt(dataSize);
         packetListener.onPacket(buffer.array(), packetType);
+        packetListener.onDuration(compositionTime);
     }
 
     @Override

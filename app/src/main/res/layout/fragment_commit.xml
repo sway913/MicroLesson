@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/y_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="W,2:3"/>
+    <TextView
+        android:id="@+id/tv_title_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_video_title_tag"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"/>
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/et_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/text_video_title_tip"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_tip"/>
+
+    <TextView
+        android:id="@+id/tv_class_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_video_class_tag"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/et_title"/>
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/et_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/text_video_class_tip"
+        app:layout_constraintTop_toBottomOf="@id/tv_class_tip"/>
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/text_commit"
+        android:background="@drawable/sp_commit_btn_background"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</android.support.constraint.ConstraintLayout>

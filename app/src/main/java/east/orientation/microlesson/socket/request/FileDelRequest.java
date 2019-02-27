@@ -19,7 +19,7 @@ public class FileDelRequest extends BytesRequest {
     @Override
     public byte[] getContent() {
         try {
-            return String.format("Orntcmd=filedel_type,data=%s,A_%s", type, fileName).getBytes("gbk");
+            return String.format("Orntcmd=filedel_type,data=%s,%s", type, fileName).getBytes("gbk");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

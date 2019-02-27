@@ -11,12 +11,16 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public interface MainContract {
 
     interface View extends MvpView {
+        void online();
+
         void show();
 
         void create();
     }
 
     interface Presenter extends MvpPresenter<View> {
+        void actionOnline();
+
         void actionShow();
 
         void actionCreate();

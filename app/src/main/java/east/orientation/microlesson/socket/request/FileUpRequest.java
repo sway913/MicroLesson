@@ -28,7 +28,7 @@ public class FileUpRequest extends BytesRequest {
     @Override
     public byte[] getContent() {
         try {
-            byte[] headBytes = String.format("Orntcmd=fileup_type,data=%s,A_%s,%s,%s,%s,", type, fileName, size, offset, length).getBytes("gbk");
+            byte[] headBytes = String.format("Orntcmd=fileup_type,data=%s,%s,%s,%s,%s,", type, fileName, size, offset, length).getBytes("gbk");
             byte[] totalBytes = new byte[headBytes.length + data.length];
 
             System.arraycopy(headBytes, 0, totalBytes, 0, headBytes.length);

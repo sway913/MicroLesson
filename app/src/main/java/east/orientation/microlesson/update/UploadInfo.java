@@ -6,6 +6,8 @@ package east.orientation.microlesson.update;
 
 public class UploadInfo {
     public String type;
+    public String clazz;// 分类
+    public String free;// 0 免费  1 收费
     public String path;
     public String fileName;
     public long size;

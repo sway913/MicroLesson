@@ -20,11 +20,14 @@ import east.orientation.microlesson.utils.RxToast;
  */
 
 public class MainFragment extends BaseFragment<MainContract.View,MainContract.Presenter> implements MainContract.View {
-    @BindView(R.id.tv_show_project)
+    @BindView(R.id.tv_online_project)
+    TextView mTvOnline;
+    @BindView(R.id.tv_local_project)
     TextView mTvShow;
     @BindView(R.id.tv_create_project)
     TextView mTvCreate;
 
+    private OnlineFragment mOnlineFragment;
     private ShowFragment mShowFragment;
     private CreateFragment mCreateFragment;
 
@@ -54,37 +57,44 @@ public class MainFragment extends BaseFragment<MainContract.View,MainContract.Pr
     }
 
     private void initFragments() {
+        mOnlineFragment = OnlineFragment.newInstance();
         mShowFragment = ShowFragment.newInstance();
         mCreateFragment = CreateFragment.newInstance();
-        loadMultipleRootFragment(R.id.layout_content,0,mShowFragment,mCreateFragment);
+        loadMultipleRootFragment(R.id.layout_content,0,mOnlineFragment,mShowFragment,mCreateFragment);
+    }
+
+    @Override
+    public void online() {
+        showHideFragment(mOnlineFragment);
     }
 
     @Override
     public void show() {
         showHideFragment(mShowFragment);
-        RxToast.showToast("show");
     }
 
     @Override
     public void create() {
-        showHideFragment(mCreateFragment);
-        RxToast.showToast("create");
+        if (mCreateFragment.getTopChildFragment() != null) {
+            showHideFragment(mCreateFragment.getTopChildFragment());
+        } else {
+            showHideFragment(mCreateFragment);
+        }
     }
 
-    @OnClick({R.id.tv_show_project,R.id.tv_create_project})
+    @OnClick({R.id.tv_online_project,R.id.tv_local_project,R.id.tv_create_project})
     void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_show_project:
+            case R.id.tv_online_project:
+                presenter.actionOnline();
+                break;
+            case R.id.tv_local_project:
                 presenter.actionShow();
                 break;
             case R.id.tv_create_project:
                 presenter.actionCreate();
                 break;
         }
-    }
-
-    public void startBrotherFragment(BaseFragment fragment) {
-        start(fragment);
     }
 
     @NonNull

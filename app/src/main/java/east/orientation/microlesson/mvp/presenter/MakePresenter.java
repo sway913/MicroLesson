@@ -1,5 +1,8 @@
 package east.orientation.microlesson.mvp.presenter;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.text.TextUtils;
 
 import com.laifeng.sopcastsdk.configuration.AudioConfiguration;
@@ -12,8 +15,11 @@ import com.luck.picture.lib.entity.LocalMedia;
 import java.io.File;
 import java.util.List;
 
+import east.orientation.microlesson.app.MicroApp;
+import east.orientation.microlesson.local.Common;
 import east.orientation.microlesson.mvp.presenter.base.BasePresenter;
 import east.orientation.microlesson.mvp.contract.MakeContract;
+import east.orientation.microlesson.utils.FileUtil;
 import east.orientation.microlesson.utils.RxUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -55,9 +61,17 @@ public class MakePresenter extends BasePresenter<MakeContract.View> implements M
     }
 
     @Override
-    public void startRecorder(StreamController streamController, String path) {
+    public void startRecorder(StreamController streamController) {
         addSubscribe(Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
             try {
+                String path;
+                String dir = FileUtil.getCacheFolder(Common.SAVE_DIR_NAME) + File.separator+ MicroApp.sUser.account;
+                File dirFile = new File(dir);
+                if (!dirFile.exists()) {
+                    if (dirFile.mkdir()) {
+                    }
+                }
+                path = dirFile.getAbsolutePath()+ File.separator + "Temp.flv";
                 //初始化flv打包器
                 FlvPacker packer = new FlvPacker();
                 packer.initAudioParams(AudioConfiguration.DEFAULT_FREQUENCY, 16, false);
@@ -92,6 +106,12 @@ public class MakePresenter extends BasePresenter<MakeContract.View> implements M
     @Override
     public void stopRecorder(StreamController streamController) {
         streamController.stop();
+    }
+
+    @Override
+    public void actionJumpCommit() {
+        String dir = FileUtil.getCacheFolder(Common.SAVE_DIR_NAME) + File.separator + MicroApp.sUser.account + File.separator + "Temp.flv";
+        ifViewAttached(view -> view.jumpToCommit(dir));
     }
 
 }

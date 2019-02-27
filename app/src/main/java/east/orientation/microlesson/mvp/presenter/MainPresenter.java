@@ -19,6 +19,11 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
 
     @Override
+    public void actionOnline() {
+        ifViewAttached(MainContract.View::online);
+    }
+
+    @Override
     public void actionShow() {
         ifViewAttached(MainContract.View::show);
     }

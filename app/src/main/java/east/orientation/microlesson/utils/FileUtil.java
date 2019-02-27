@@ -16,8 +16,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import east.orientation.microlesson.app.MicroApp;
 
@@ -48,6 +52,10 @@ public class FileUtil {
         return false;
     }
 
+    public static String getCacheDirPath() {
+        return cacheDir.getAbsolutePath();
+    }
+
     /**
      * 获取缓存文件地址
      */
@@ -55,6 +63,29 @@ public class FileUtil {
         return cacheDir.getAbsolutePath() + pathDiv + fileName;
     }
 
+    /**
+     * 获取缓存文件 指定文件夹中文件路径
+     * @param fileName
+     * @param folder
+     * @return
+     */
+    public static String getCacheFolderFile(String fileName,String folder) {
+        return getCacheFolder(folder) + pathDiv + fileName;
+    }
+
+    /**
+     * 获取的目录默认没有最后的”/”,需要自己加上
+     * 获取本应用图片缓存目录
+     *
+     * @return
+     */
+    public static File getCacheFolder(String dirName) {
+        File folder = new File(cacheDir, dirName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        return folder;
+    }
 
     /**
      * 判断缓存文件是否存在
@@ -64,6 +95,18 @@ public class FileUtil {
         return file.exists();
     }
 
+    /**
+     * 重命名
+     * @param resFilePath 文件路径
+     * @param newFileName 修改后的文件名
+     * @return
+     */
+    public static boolean renameFile(String resFilePath,String newFileName) {
+        File resFile = new File(resFilePath);
+        String newPath = resFile.getParent() + File.separator + newFileName;
+        File newFile = new File(newPath);
+        return resFile.renameTo(newFile);
+    }
 
     /**
      * 将图片存储为文件
@@ -92,6 +135,7 @@ public class FileUtil {
         }
         return null;
     }
+
 
     /**
      * 将数据存储为文件
@@ -129,7 +173,6 @@ public class FileUtil {
         return false;
     }
 
-
     /**
      * 将数据存储为文件
      *
@@ -157,20 +200,6 @@ public class FileUtil {
             }
         }
         return null;
-    }
-
-    /**
-     * 获取的目录默认没有最后的”/”,需要自己加上
-     * 获取本应用图片缓存目录
-     *
-     * @return
-     */
-    public static File getCacheFolder(Context context) {
-        File folder = new File(context.getCacheDir(), "IMAGECACHE");
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-        return folder;
     }
 
     /**
@@ -221,16 +250,6 @@ public class FileUtil {
             }
         }
         return data;
-    }
-
-    /**
-     * 根据文件路径获取文件
-     *
-     * @param filePath 文件路径
-     * @return 文件
-     */
-    public static File getFileByPath(String filePath) {
-        return TextUtils.isEmpty(filePath) ? null : new File(filePath);
     }
 
     /**
@@ -294,6 +313,26 @@ public class FileUtil {
             return null;
         } finally {
             closeIO(is);
+        }
+    }
+
+    /**
+     * 关闭IO
+     *
+     * @param closeables closeable
+     */
+    public static void closeIO(Closeable... closeables) {
+        if (closeables == null) {
+            return;
+        }
+        try {
+            for (Closeable closeable : closeables) {
+                if (closeable != null) {
+                    closeable.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -367,8 +406,7 @@ public class FileUtil {
             }
             // 删除子目录
             else if (files[i].isDirectory()) {
-                flag = deleteDirectory(files[i]
-                        .getAbsolutePath());
+                flag = deleteDirectory(files[i].getAbsolutePath());
                 if (!flag)
                     break;
             }
@@ -387,22 +425,412 @@ public class FileUtil {
     }
 
     /**
-     * 关闭IO
+     * 获取目录下所有文件
      *
-     * @param closeables closeable
+     * @param dirPath     目录路径
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
      */
-    public static void closeIO(Closeable... closeables) {
-        if (closeables == null) {
-            return;
+    public static List<File> listFilesInDir(String dirPath, boolean isRecursive) {
+        return listFilesInDir(getFileByPath(dirPath), isRecursive);
+    }
+
+    /**
+     * 获取目录下所有文件
+     *
+     * @param dir         目录
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDir(File dir, boolean isRecursive) {
+        if (isRecursive) {
+            return listFilesInDir(dir);
+        }
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        Collections.addAll(list, dir.listFiles());
+        return list;
+    }
+
+    /**
+     * 获取目录下所有文件包括子目录
+     *
+     * @param dirPath 目录路径
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDir(String dirPath) {
+        return listFilesInDir(getFileByPath(dirPath));
+    }
+
+    /**
+     * 获取目录下所有文件(不包括文件夹)包括子目录
+     *
+     * @param dir 目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDir(File dir) {
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                list.addAll(listFilesInDir(file));
+            } else {
+                list.add(file);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取目录下所有后缀名为suffix的文件
+     * <p>大小写忽略</p>
+     *
+     * @param dirPath     目录路径
+     * @param suffix      后缀名
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(String dirPath, String suffix, boolean isRecursive) {
+        return listFilesInDirWithFilter(getFileByPath(dirPath), suffix, isRecursive);
+    }
+
+    /**
+     * 获取目录下所有后缀名为suffix的文件
+     * <p>大小写忽略</p>
+     *
+     * @param dir         目录
+     * @param suffix      后缀名
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(File dir, String suffix, boolean isRecursive) {
+        if (isRecursive) {
+            return listFilesInDirWithFilter(dir, suffix);
+        }
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.getName().toUpperCase().endsWith(suffix.toUpperCase())) {
+                list.add(file);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取目录下所有后缀名为suffix的文件包括子目录
+     * <p>大小写忽略</p>
+     *
+     * @param dirPath 目录路径
+     * @param suffix  后缀名
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(String dirPath, String suffix) {
+        return listFilesInDirWithFilter(getFileByPath(dirPath), suffix);
+    }
+
+    /**
+     * 获取目录下所有后缀名为suffix的文件包括子目录
+     * <p>大小写忽略</p>
+     *
+     * @param dir    目录
+     * @param suffix 后缀名
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(File dir, String suffix) {
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.getName().toUpperCase().endsWith(suffix.toUpperCase())) {
+                list.add(file);
+            }
+            if (file.isDirectory()) {
+                list.addAll(listFilesInDirWithFilter(file, suffix));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取目录下所有符合filter的文件
+     *
+     * @param dirPath     目录路径
+     * @param filter      过滤器
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(String dirPath, FilenameFilter filter, boolean isRecursive) {
+        return listFilesInDirWithFilter(getFileByPath(dirPath), filter, isRecursive);
+    }
+
+    /**
+     * 获取目录下所有符合filter的文件
+     *
+     * @param dir         目录
+     * @param filter      过滤器
+     * @param isRecursive 是否递归进子目录
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(File dir, FilenameFilter filter, boolean isRecursive) {
+        if (isRecursive) {
+            return listFilesInDirWithFilter(dir, filter);
+        }
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (filter.accept(file.getParentFile(), file.getName())) {
+                list.add(file);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取目录下所有符合filter的文件包括子目录
+     *
+     * @param dirPath 目录路径
+     * @param filter  过滤器
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(String dirPath, FilenameFilter filter) {
+        return listFilesInDirWithFilter(getFileByPath(dirPath), filter);
+    }
+
+    /**
+     * 获取目录下所有符合filter的文件包括子目录
+     *
+     * @param dir    目录
+     * @param filter 过滤器
+     * @return 文件链表
+     */
+    public static List<File> listFilesInDirWithFilter(File dir, FilenameFilter filter) {
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (filter.accept(file.getParentFile(), file.getName())) {
+                list.add(file);
+            }
+            if (file.isDirectory()) {
+                list.addAll(listFilesInDirWithFilter(file, filter));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取目录下指定文件名的文件包括子目录
+     * <p>大小写忽略</p>
+     *
+     * @param dirPath  目录路径
+     * @param fileName 文件名
+     * @return 文件链表
+     */
+    public static List<File> searchFileInDir(String dirPath, String fileName) {
+        return searchFileInDir(getFileByPath(dirPath), fileName);
+    }
+
+    /**
+     * 获取目录下指定文件名的文件包括子目录
+     * <p>大小写忽略</p>
+     *
+     * @param dir      目录
+     * @param fileName 文件名
+     * @return 文件链表
+     */
+    public static List<File> searchFileInDir(File dir, String fileName) {
+        if (dir == null || !isDir(dir)) {
+            return null;
+        }
+        List<File> list = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.getName().toUpperCase().equals(fileName.toUpperCase())) {
+                list.add(file);
+            }
+            if (file.isDirectory()) {
+                list.addAll(listFilesInDirWithFilter(file, fileName));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 根据文件路径获取文件
+     *
+     * @param filePath 文件路径
+     * @return 文件
+     */
+    public static File getFileByPath(String filePath) {
+        return TextUtils.isEmpty(filePath) ? null : new File(filePath);
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(String filePath) {
+        return isFileExists(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param file 文件
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(File file) {
+        return file != null && file.exists();
+    }
+
+
+    /**
+     * 判断是否是目录
+     *
+     * @param dirPath 目录路径
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isDir(String dirPath) {
+        return isDir(getFileByPath(dirPath));
+    }
+
+    /**
+     * 判断是否是目录
+     *
+     * @param file 文件
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isDir(File file) {
+        return isFileExists(file) && file.isDirectory();
+    }
+
+    /**
+     * 判断是否是文件
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isFile(String filePath) {
+        return isFile(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断是否是文件
+     *
+     * @param file 文件
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isFile(File file) {
+        return isFileExists(file) && file.isFile();
+    }
+
+    /**
+     * 判断目录是否存在，不存在则判断是否创建成功
+     *
+     * @param dirPath 文件路径
+     * @return {@code true}: 存在或创建成功<br>{@code false}: 不存在或创建失败
+     */
+    public static boolean createOrExistsDir(String dirPath) {
+        return createOrExistsDir(getFileByPath(dirPath));
+    }
+
+    /**
+     * 判断目录是否存在，不存在则判断是否创建成功
+     *
+     * @param file 文件
+     * @return {@code true}: 存在或创建成功<br>{@code false}: 不存在或创建失败
+     */
+    public static boolean createOrExistsDir(File file) {
+        // 如果存在，是目录则返回true，是文件则返回false，不存在则返回是否创建成功
+        return file != null && (file.exists() ? file.isDirectory() : file.mkdirs());
+    }
+
+    /**
+     * 判断文件是否存在，不存在则判断是否创建成功
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在或创建成功<br>{@code false}: 不存在或创建失败
+     */
+    public static boolean createOrExistsFile(String filePath) {
+        return createOrExistsFile(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断文件是否存在，不存在则判断是否创建成功
+     *
+     * @param file 文件
+     * @return {@code true}: 存在或创建成功<br>{@code false}: 不存在或创建失败
+     */
+    public static boolean createOrExistsFile(File file) {
+        if (file == null) {
+            return false;
+        }
+        // 如果存在，是文件则返回true，是目录则返回false
+        if (file.exists()) {
+            return file.isFile();
+        }
+        if (!createOrExistsDir(file.getParentFile())) {
+            return false;
         }
         try {
-            for (Closeable closeable : closeables) {
-                if (closeable != null) {
-                    closeable.close();
-                }
-            }
+            return file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 判断文件是否存在，存在则在创建之前删除
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 创建成功<br>{@code false}: 创建失败
+     */
+    public static boolean createFileByDeleteOldFile(String filePath) {
+        return createFileByDeleteOldFile(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断文件是否存在，存在则在创建之前删除
+     *
+     * @param file 文件
+     * @return {@code true}: 创建成功<br>{@code false}: 创建失败
+     */
+    public static boolean createFileByDeleteOldFile(File file) {
+        if (file == null) {
+            return false;
+        }
+        // 文件存在并且删除失败返回false
+        if (file.exists() && file.isFile() && !file.delete()) {
+            return false;
+        }
+        // 创建目录失败返回false
+        if (!createOrExistsDir(file.getParentFile())) {
+            return false;
+        }
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -96,7 +96,6 @@ public class CreateFragment extends BaseFragment<CreateContract.View,CreateContr
     public void showPrepare(List<LocalMedia> mediaList) {
         PrepareFragment prepareFragment = findChildFragment(PrepareFragment.class);
         if (prepareFragment == null) prepareFragment = PrepareFragment.newInstance(mediaList);
-
         ((MainFragment) getParentFragment()).start(prepareFragment);
     }
 

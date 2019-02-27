@@ -510,7 +510,7 @@ public class InkCanvas extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.e(TAG,"onSizeChange " + w + "/" + h + "     " + oldw + "/" + oldh);
+        //Log.e(TAG,"onSizeChange " + w + "/" + h + "     " + oldw + "/" + oldh);
         if (w > 0 && mCanvasWidth != w && mCanvasHeight != h) {
             mCanvasWidth = w;
             mCanvasHeight = h;
@@ -1343,7 +1343,7 @@ public class InkCanvas extends View {
         Observable.create(new ObservableOnSubscribe<Bitmap>() {
             @Override
             public void subscribe(ObservableEmitter<Bitmap> emitter) throws Exception {
-                Log.e("tag", "draw :"+filePath);
+                //Log.e("tag", "draw :"+filePath);
 
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 // 这个isjustdecodebounds很重要
@@ -1366,11 +1366,10 @@ public class InkCanvas extends View {
 
                         opt.inSampleSize = picHeight / height;
                 }
-                Log.e(TAG,"sample size "+opt.inSampleSize);
                 // 这次再真正地生成一个有像素的，经过缩放了的bitmap
                 opt.inJustDecodeBounds = false;
                 opt.inSampleSize = opt.inSampleSize*2;
-                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+               // opt.inPreferredConfig = Bitmap.Config.RGB_565;
                 opt.inPurgeable = true;
                 opt.inInputShareable = true;
                 bm = BitmapFactory.decodeFile(filePath,opt);

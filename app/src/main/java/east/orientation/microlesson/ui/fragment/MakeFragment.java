@@ -1,25 +1,23 @@
 package east.orientation.microlesson.ui.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +26,9 @@ import butterknife.OnClick;
 import east.orientation.microlesson.R;
 import east.orientation.microlesson.local.Common;
 import east.orientation.microlesson.local.adapter.MakePictureAdapter;
-import east.orientation.microlesson.local.adapter.MakeVoiceAdapter;
 import east.orientation.microlesson.local.adapter.SpaceItemDecoration;
-import east.orientation.microlesson.local.model.LocalVoice;
 import east.orientation.microlesson.mvp.contract.MakeContract;
 import east.orientation.microlesson.mvp.presenter.MakePresenter;
-import east.orientation.microlesson.ui.fragment.base.BaseFragment;
 import east.orientation.microlesson.ui.fragment.base.ScreenFragment;
 import east.orientation.microlesson.utils.RxToast;
 
@@ -51,6 +46,8 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
     ImageView mIvStart;
     @BindView(R.id.tv_duration)
     TextView mTvDuration;
+    @BindView(R.id.tv_pic_position)
+    TextView mTvPage;
 
     private List<LocalMedia> mMedias = new ArrayList<>();
     private CommonAdapter<LocalMedia> mPicAdapter;
@@ -69,6 +66,12 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_make;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        _mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
@@ -97,12 +100,18 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
                 changePage(pagerSnapHelper,layoutManager);
             }
         });
+        mRvPics.setItemViewCacheSize(9);
+        mRvPics.setDrawingCacheEnabled(true);
+        mRvPics.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        mRvPics.setHasFixedSize(true);// 固定高度
         mRvPics.setNestedScrollingEnabled(false);
         mRvPics.setAdapter(mPicAdapter);
     }
 
     private void changePage(PagerSnapHelper pagerSnapHelper,LinearLayoutManager layoutManager) {
         mPicPosition = pagerSnapHelper.findTargetSnapPosition(layoutManager,0,0);
+        String strPage = (mPicPosition+1)+"/"+mMedias.size();
+        mTvPage.setText(strPage);
     }
 
     @Override
@@ -116,10 +125,11 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
     void click(View view) {
         switch (view.getId()) {
             case R.id.iv_start:
-                if (isStart)
+                if (isStart) {
                     presenter.stopRecorder(mStreamController);
-                else
+                } else {
                     requestRecording();
+                }
                 break;
         }
     }
@@ -127,9 +137,7 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
     @Override
     protected void requestRecordSuccess() {
         super.requestRecordSuccess();
-        presenter.startRecorder(mStreamController, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
-                        .getAbsolutePath()+"/"+ System.currentTimeMillis() + "_micro.flv");
-        isStart = true;
+        presenter.startRecorder(mStreamController);
     }
 
     @Override
@@ -141,6 +149,60 @@ public class MakeFragment extends ScreenFragment<MakeContract.View,MakeContract.
     @Override
     public void notifyPicChange(List<LocalMedia> mediaList) {
         mPicAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void jumpToCommit(String filePath) {
+        StrictMode.VmPolicy vmPolicy = StrictMode.getVmPolicy();
+        try {
+            // disable detecting FileUriExposure on public file
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().build());
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                    .addCategory(Intent.CATEGORY_DEFAULT)
+                    .setData(Uri.fromFile(new File(filePath)));
+            _mActivity.sendBroadcast(intent);
+        } finally {
+            StrictMode.setVmPolicy(vmPolicy);
+            startWithPop(CommitFragment.newInstance(filePath));
+        }
+    }
+
+    @Override
+    protected void streamStart() {
+        super.streamStart();
+        isStart = true;
+        mIvStart.setSelected(true);
+    }
+
+    @Override
+    protected void streamPause() {
+        super.streamPause();
+        mIvStart.setSelected(false);
+    }
+
+    @Override
+    protected void streamResume() {
+        super.streamResume();
+    }
+
+    @Override
+    protected void streamMute() {
+        super.streamMute();
+    }
+
+    @Override
+    protected void streamStop() {
+        //super.streamStop();
+        if (mIvStart != null) {
+            mIvStart.setSelected(true);
+            presenter.actionJumpCommit();
+        }
+    }
+
+    @Override
+    protected void streamDuration(String duration) {
+        super.streamDuration(duration);
+        if (mIvStart != null) mTvDuration.setText(duration);
     }
 
     @NonNull

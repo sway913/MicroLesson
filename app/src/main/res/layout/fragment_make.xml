@@ -12,21 +12,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.5"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/sp_tv_background"
         app:layout_constraintBottom_toBottomOf="@id/rv_pics"
-        android:visibility="gone">
+        android:visibility="visible">
         <ImageView
             android:id="@+id/iv_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/drawable_icon_start_24dp"/>
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/sl_recorder_btn_background" />
         <TextView
             android:id="@+id/tv_duration"
+            android:text="00:00"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -58,7 +62,7 @@
         app:layout_constraintLeft_toLeftOf="@id/rv_pics"
         app:layout_constraintRight_toRightOf="@id/rv_pics"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="0.99" />-->
 
     <TextView
         android:id="@+id/tv_pic_position"
@@ -73,14 +77,10 @@
         android:background="@drawable/sp_tv_background"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toTopOf="@id/rv_pics"
         app:layout_constraintBottom_toBottomOf="@id/rv_pics"
-        app:layout_constraintLeft_toLeftOf="@id/rv_pics"
-        app:layout_constraintRight_toRightOf="@id/rv_pics"
-        app:layout_constraintHorizontal_bias="0.99"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintRight_toRightOf="@id/rv_pics"/>
 
-    <View
+    <!--<View
         android:id="@+id/space"
         android:layout_width="0dp"
         android:layout_height="1dp"
@@ -89,21 +89,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_voice"/>
 
-    &lt;!&ndash;<Button&ndash;&gt;
-        &lt;!&ndash;android:id="@+id/btn_recorder"&ndash;&gt;
-        &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
-        &lt;!&ndash;android:layout_height="0dp"&ndash;&gt;
-        &lt;!&ndash;android:text="@string/text_start_recorder"&ndash;&gt;
-        &lt;!&ndash;android:drawableStart="@drawable/sl_recorder_btn_background"&ndash;&gt;
-        &lt;!&ndash;android:background="@drawable/rp_btn_background"&ndash;&gt;
-        &lt;!&ndash;android:paddingTop="0dp"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintLeft_toLeftOf="parent"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintRight_toRightOf="parent"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintTop_toTopOf="@+id/iv_commit"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintHorizontal_bias="0"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintVertical_bias="1"&ndash;&gt;
-        &lt;!&ndash;app:layout_constraintWidth_percent="0.88" />&ndash;&gt;
+    <Button
+        android:id="@+id/btn_recorder"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/text_start_recorder"
+        android:drawableStart="@drawable/sl_recorder_btn_background"
+        android:background="@drawable/rp_btn_background"
+        android:paddingTop="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_commit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.88" />
 
     <ImageView
         android:id="@+id/iv_recorder"

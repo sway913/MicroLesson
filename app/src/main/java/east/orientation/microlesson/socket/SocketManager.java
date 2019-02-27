@@ -32,6 +32,8 @@ import east.orientation.microlesson.socket.request.FileUpRequest;
 import east.orientation.microlesson.socket.request.FileUpdateSynRequest;
 import east.orientation.microlesson.socket.request.GetidentityRequest;
 import east.orientation.microlesson.socket.request.LoginRequest;
+import east.orientation.microlesson.socket.request.PublishFileQueryRequest;
+import east.orientation.microlesson.socket.request.PublishFileRequest;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -247,14 +249,14 @@ public class SocketManager {
         SocketManager.getInstance().send(new FileQueryRequest(type, key, time));
     }
 
-    /**
-     * 查询命令 查询新的文件
-     *
-     * @return
-     */
-    public void filequery_syn(String type) {
-        SocketManager.getInstance().send(new FileQuerySynRequest(type));
-    }
+//    /**
+//     * 查询命令 查询新的文件
+//     *
+//     * @return
+//     */
+//    public void filequery_syn(String type) {
+//        SocketManager.getInstance().send(new FileQuerySynRequest(type));
+//    }
 
     /**
      * 下载命令
@@ -262,8 +264,8 @@ public class SocketManager {
      * @param fileName 文件名
      * @return
      */
-    public void filedown(String type, String fileName, long offset, int length) {
-        SocketManager.getInstance().send(new FileDownRequest(type, fileName, offset, length));
+    public void filedown(String type, String fileName, long offset, int length,String userId) {
+        SocketManager.getInstance().send(new FileDownRequest(type, fileName, offset, length, userId));
     }
 
     /**
@@ -277,23 +279,46 @@ public class SocketManager {
     }
 
     /**
-     * 删除消息
-     *
-     * @param fileName 文件名
-     * @return
+     * 发布公开文件
+     * @param clazz
+     * @param type
+     * @param fileName
+     * @param free
      */
-    public void filedel_syn(String type, String fileName) {
-        SocketManager.getInstance().send(new FileDelSynRequest(type, fileName));
+    public void publishFile(String clazz,String type,String fileName,String free) {
+        SocketManager.getInstance().send(new PublishFileRequest(clazz,type,fileName,free));
     }
 
     /**
-     * 下载成功回复
-     *
-     * @param fileName 文件名
-     * @return
+     * 按条件 查找公开文件
+     * @param clazz
+     * @param type
+     * @param userId
+     * @param fileName
+     * @param free
      */
-    public void fileupdated_syn(String type, String fileName) {
-        SocketManager.getInstance().send(new FileUpdateSynRequest(type, fileName));
+    public void publishQuery(String clazz,String type,String userId,String fileName,String free) {
+        SocketManager.getInstance().send(new PublishFileQueryRequest(clazz,type,userId,fileName,free));
     }
+
+//    /**
+//     * 删除消息
+//     *
+//     * @param fileName 文件名
+//     * @return
+//     */
+//    public void filedel_syn(String type, String fileName) {
+//        SocketManager.getInstance().send(new FileDelSynRequest(type, fileName));
+//    }
+//
+//    /**
+//     * 下载成功回复
+//     *
+//     * @param fileName 文件名
+//     * @return
+//     */
+//    public void fileupdated_syn(String type, String fileName) {
+//        SocketManager.getInstance().send(new FileUpdateSynRequest(type, fileName));
+//    }
 
 }

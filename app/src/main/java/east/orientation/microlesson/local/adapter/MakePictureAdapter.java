@@ -32,15 +32,14 @@ public class MakePictureAdapter extends CommonAdapter<LocalMedia> {
 
     @Override
     protected void convert(ViewHolder holder, LocalMedia localMedia, int position) {
+        //Glide.with(holder.getConvertView()).load(localMedia.getPath()).into((ImageView) holder.getView(R.id.iv_show));
         InkCanvas inkCanvas = holder.getView(R.id.ink_canvas);
         inkCanvas.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Log.e("tag","height "+inkCanvas.getCanvasHeight()+" position: "+position +" -path- "+localMedia.getPath());
+                //Log.e("tag"," position: "+position +"height "+inkCanvas.getCanvasHeight()+" -path- "+localMedia.getPath());
                 if (!TextUtils.isEmpty(localMedia.getPath())) {
                     inkCanvas.drawPicBackGround(localMedia.getPath(),inkCanvas.getCanvasWidth(),inkCanvas.getCanvasHeight());
-                } else if (!TextUtils.isEmpty(localMedia.getCompressPath())) {
-                    inkCanvas.drawPicBackGround(localMedia.getCompressPath(),inkCanvas.getCanvasWidth(),inkCanvas.getCanvasHeight());
                 }
                 inkCanvas.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }

@@ -10,8 +10,8 @@ import java.io.File;
 
 public class Common {
     public static final String APP_KEY = "MicroLesson";
-    public static final String SAVE_DIR_NAME = "MicroLesson";
-    public static final String DEFAULT_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + Common.SAVE_DIR_NAME;
+    public static final String SAVE_DIR_NAME = "Projects";
+    public static final String DRAFT_DIR = "Draft";
 
     /**********************************************************/
     /**接口格式相关常量**/
@@ -22,30 +22,26 @@ public class Common {
     public static final String SYNC_SERVER_IP = "119.23.238.102";// 服务器ip
     public static final int SYNC_SERVER_PORT = 8888;// 服务器端口
 
+    public static final String KEY_USER = "key_user";
     public static final String KEY_ACCOUNT = "key_account";
     public static final String KEY_PASSWD = "key_passwd";
     public static final String DEFAULT_ACOUNT = "unknow";
-    public static final String KEY_UPLOAD_QUQUE = "key_upload_queue";
 
     public static final String CMD_LOGIN = "login";
     public static final String CMD_GETIDENTITY = "getidentity";
     public static final String CMD_FILE_UP = "fileup";
-    public static final String CMD_FILE_QUERY = "filequery";
-    public static final String CMD_FILE_DOWN = "filedown";
     public static final String CMD_FILE_DEL = "filedel";
-    public static final String CMD_FILE_QUERY_SYN = "filequery_syn";
-    public static final String CMD_FILE_DEL_SYN = "filedel_syn";
-    public static final String CMD_FILE_UPDATED_SYN = "fileupdated_syn";
-
-    public static final String TYPE_APK = "0";// apk更新
-    public static final String TYPE_PREPARE_LESSONS = "1";// 备课
-    public static final String TYPE_MICRO_LESSONS = "2";// 微课
-
     public static final String CMD_FILE_UP_TYPE = "fileup_type";
     public static final String CMD_FILE_QUERY_TYPE = "filequery_type";
     public static final String CMD_FILE_DOWN_TYPE = "filedown_type";
     public static final String CMD_FILE_DEL_TYPE = "filedel_type";
     public static final String CMD_FILE_RENAME_TYPE = "filerename_type";
+    public static final String CMD_PUBLISH_FILE = "publishfile";
+    public static final String CMD_PUBLISH_QUERY = "pubfile_query";
+
+    public static final String TYPE_APK = "0";// apk更新
+    public static final String TYPE_PREPARE_LESSONS = "1";// 备课
+    public static final String TYPE_MICRO_LESSONS = "2";// 微课
 
     public static final int CMD_LOGIN_ID = 1;
     public static final int CMD_GETIDENTITY_ID = 10;
@@ -67,9 +63,14 @@ public class Common {
     public static final int CMD_FILE_DOWN_ERROR = 4;
 
 
+    public static final String KEY_PROJECTS = "projects";
     public static final String KEY_MEDIAS = "medias";
+    public static final String KEY_FILE_PATH = "file_path";
 
     public static final int MAX_SELECTED_COUNT = 9;
     public static final int REQUEST_ADD_PICTURES = 199;
     public static final int REQUEST_CHANGE_PICTURE = 200;
+
+    public static final String DB_NAME = "manager";
+    public static final String DB_SCREAT = "123456";
 }

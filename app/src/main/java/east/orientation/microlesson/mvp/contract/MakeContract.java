@@ -18,13 +18,15 @@ public interface MakeContract {
         // pic
         void notifyPicChange(List<LocalMedia> mediaList);
         // recorder
+        void jumpToCommit(String filePath);
     }
 
     interface Presenter extends MvpPresenter<View> {
         // pic
         void getDefaultPicList(List<LocalMedia> medias, List<LocalMedia> mediaList);
         // recorder
-        void startRecorder(StreamController streamController,String filePath);
+        void startRecorder(StreamController streamController);
         void stopRecorder(StreamController streamController);
+        void actionJumpCommit();
     }
 }

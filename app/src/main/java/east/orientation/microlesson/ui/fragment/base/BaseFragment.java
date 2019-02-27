@@ -50,25 +50,6 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>> 
         initEventAndData();
     }
 
-//    /**
-//     * 处理回退事件
-//     */
-//    @Override
-//    public boolean onBackPressedSupport() {
-//        if (getChildFragmentManager().getBackStackEntryCount() > 1) {
-//            popChild();
-//        } else {
-//            if (isInnerFragment) {
-//                _mActivity.finish();
-//                return true;
-//            }
-//            if (RxToast.doubleClickExit()) {
-//                _mActivity.finish();
-//            }
-//        }
-//        return true;
-//    }
-
     /**
      * 有些初始化必须在onCreateView中，例如setAdapter,
      * 否则，会弹出 No adapter attached; skipping layout

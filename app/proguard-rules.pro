@@ -200,18 +200,8 @@
     *;
 }
 
-# eventbus
--keepattributes *Annotation*
--keepclassmembers class * {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
-# Only required if you use AsyncExecutor
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
-
+#greendao
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
 public static java.lang.String TABLENAME;
 }
@@ -229,8 +219,12 @@ public static java.lang.String TABLENAME;
 -dontwarn com.squareup.leakcanary.**
 -keep class com.squareup.leakcanary.** { *; }
 
--dontwarn com.github.LuckSiege.**
--keep class com.github.LuckSiege.** { *; }
+#PictureSelector 2.0
+-keep class com.luck.picture.lib.** { *; }
+
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
 
 #glide
 -dontwarn com.bumptech.glide.**
@@ -240,24 +234,43 @@ public static java.lang.String TABLENAME;
   public *;
 }
 
-#chatkit
--keep class * extends com.stfalcon.chatkit.messages.MessageHolders$OutcomingTextMessageViewHolder {
-     public <init>(android.view.View, java.lang.Object);
-     public <init>(android.view.View);
- }
--keep class * extends com.stfalcon.chatkit.messages.MessageHolders$IncomingTextMessageViewHolder {
-     public <init>(android.view.View, java.lang.Object);
-     public <init>(android.view.View);
- }
--keep class * extends com.stfalcon.chatkit.messages.MessageHolders$IncomingImageMessageViewHolder {
-     public <init>(android.view.View, java.lang.Object);
-     public <init>(android.view.View);
- }
--keep class * extends com.stfalcon.chatkit.messages.MessageHolders$OutcomingImageMessageViewHolder {
-     public <init>(android.view.View, java.lang.Object);
-     public <init>(android.view.View);
- }
+#rxjava
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+ long producerIndex;
+ long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
 
+#rxandroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+-keep class east.orientation.microlesson.rxbus.** { *; }
+-keepclassmembers class * {
+    @east.orientation.microlesson.rxbus.Subscribe <methods>;
+}
+
+#ijkplayer
+-keep class tv.danmaku.ijk.media.player.** {*;}
+-keep class tv.danmaku.ijk.media.player.IjkMediaPlayer{*;}
+-keep class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{*;}
+
+#stroke
 -dontwarn com.stroke.**
 -keep class com.stroke.**
 

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <com.stroke.view.InkCanvas
         android:id="@+id/ink_canvas"
         android:layout_width="0dp"
@@ -15,8 +14,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.99"
         app:layout_constraintHeight_percent="0.99"/>
-    <ImageView
-        android:id="@+id/iv_show"
-        android:layout_width="140dp"
-        android:layout_height="140dp" />
 </android.support.constraint.ConstraintLayout>

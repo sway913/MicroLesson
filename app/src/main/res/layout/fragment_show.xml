@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cadetblue">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_project_user_name"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:gravity="center|top"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:background="@color/whitesmoke"
+        app:layout_constraintTop_toBottomOf="@id/tv_user">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_project"
             android:layout_width="match_parent"

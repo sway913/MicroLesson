@@ -28,10 +28,17 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
     private Sender mSender;
     private IVideoController mVideoController;
     private IAudioController mAudioController;
+    private StreamListener mStreamListener;
 
-    public StreamController(IVideoController videoProcessor, IAudioController audioProcessor) {
+    public StreamController(IVideoController videoController, IAudioController audioController) {
+        mVideoController = videoController;
+        mAudioController = audioController;
+    }
+
+    public StreamController(IVideoController videoProcessor, IAudioController audioProcessor, StreamListener streamListener) {
         mAudioController = audioProcessor;
         mVideoController = videoProcessor;
+        mStreamListener = streamListener;
     }
 
     public void setVideoConfiguration(VideoConfiguration videoConfiguration) {
@@ -67,6 +74,7 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
                 mAudioController.setAudioEncodeListener(StreamController.this);
                 mAudioController.start();
                 mVideoController.start();
+                if (mStreamListener != null) mStreamListener.start();
             }
         });
     }
@@ -85,6 +93,7 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
                 if(mPacker != null) {
                     mPacker.stop();
                 }
+                if (mStreamListener != null) mStreamListener.stop();
             }
         });
     }
@@ -95,6 +104,7 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
             public void process() {
                 mAudioController.pause();
                 mVideoController.pause();
+                if (mStreamListener != null) mStreamListener.pause();
             }
         });
     }
@@ -105,12 +115,14 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
             public void process() {
                 mAudioController.resume();
                 mVideoController.resume();
+                if (mStreamListener != null) mStreamListener.resume();
             }
         });
     }
 
     public void mute(boolean mute) {
         mAudioController.mute(mute);
+        if (mStreamListener != null) mStreamListener.mute();
     }
 
     public int getSessionId() {
@@ -139,6 +151,13 @@ public class StreamController implements OnAudioEncodeListener, OnVideoEncodeLis
     public void onPacket(byte[] data, int packetType) {
         if(mSender != null) {
             mSender.onData(data, packetType);
+        }
+    }
+
+    @Override
+    public void onDuration(long duration) {
+        if (mStreamListener != null) {
+            mStreamListener.duration(duration);
         }
     }
 }
